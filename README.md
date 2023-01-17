@@ -92,6 +92,6 @@ Generally, it could generate pure letters passwords, pure digits passwords, pure
 
 ## Reference
 
-![Math.random()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)
-![Crypto.getRandomValues()](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues)
-![There’s Math.random(), and then there’s Math.random()](https://v8.dev/blog/math-random)
+[Math.random()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)
+[Crypto.getRandomValues()](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues)
+[There’s Math.random(), and then there’s Math.random()](https://v8.dev/blog/math-random)
