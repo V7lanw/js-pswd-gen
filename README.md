@@ -2,6 +2,10 @@
 
 JavaScript Password Generator
 
+## Deployment
+
+<https://v7lanw.github.io/js-pswd-gen/>
+
 ## Usage
 
 Generally, it could generate pure letters passwords, pure digits passwords, pure special characters passwords, and mixed characters passwords.
