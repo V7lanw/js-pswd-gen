@@ -182,13 +182,53 @@ function getPasswordOptions() {
 function getRandom(arr) {
   arrLen = arr.length;
   console.log(arrLen);
-  return arrLen;
+  const oneEleArray = new Uint8Array(1);
+  self.crypto.getRandomValues(oneEleArray);
+  console.log(oneEleArray);
+  randomChar = arr[Math.floor((oneEleArray[0] / (2 ** 8)) * arrLen)];
+  console.log(randomChar);
+  return randomChar;
 }
 
 // Function to generate password with user input
 function generatePassword() {
-  const password = getPasswordOptions();
-  // const password = getRandom(lowerCasedCharacters);
+  const passwordOptions = getPasswordOptions();
+  const passwordLength = parseInt(passwordOptions.slice(0, -4), 2);
+  console.log(`passwordLength: ${passwordLength}`);
+  // Construct character candidates for password.
+  // Follow the order of password option structure
+  // !!!!!!
+  // You may wonder why here "sth == 1" are used, if just using "sth" in if (),
+  // the results are not as expected, and I don't know why. Maybe they are 
+  // issues of slice function, but I have to learn more test more and verify my guess.
+  let charCandidates = [];
+  // Bit 3: lowercase English letters, 1 for chosen, 0 for not chosen.
+  console.log(passwordOptions.slice(-4, -3));
+  if (passwordOptions.slice(-4, -3) == 1) {
+    charCandidates = charCandidates.concat(lowerCasedCharacters);
+  }
+  // Bit 2: uppercase English letters, 1 for chosen, 0 for not chosen.
+  console.log(passwordOptions.slice(-3, -2));
+  if (passwordOptions.slice(-3, -2) == 1) {
+    charCandidates = charCandidates.concat(upperCasedCharacters);
+  }
+  // Bit 1: Hindu-Arabic numerals option, 1 for chosen, 0 for not chosen.
+  console.log(passwordOptions.slice(-2, -1));
+  if (passwordOptions.slice(-2, -1) == 1) {
+    charCandidates = charCandidates.concat(numericCharacters);
+  }
+  // Bit 0: OWASP special characters option, 1 for chosen, 0 for not chosen.
+  console.log(passwordOptions.slice(-1));
+  if (passwordOptions.slice(-1) == 1) {
+    charCandidates = charCandidates.concat(specialCharacters);
+  }
+  console.log(`charCandidates: ${charCandidates}`);
+  let passwordArray = new Array(passwordLength);
+  for (let i = 0; i < passwordLength; i++) {
+    passwordArray[i] = getRandom(charCandidates);
+    console.log(`passwordArray[${i}] = ${passwordArray[i]}`);
+  }
+  const password = passwordArray.join("");
   return password;
 }
 
