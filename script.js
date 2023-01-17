@@ -138,24 +138,24 @@ function getPasswordOptions() {
   // The structure of pswdOpt is at the end of this function.
   let pswdOpt = "";
   const pswdLengthBits = getPasswordLengthBits();
-  console.log(`pswdLengthBits = ${pswdLengthBits}`);
+  // console.log(`pswdLengthBits = ${pswdLengthBits}`);
   let lcOpt = 1;
   const userInput1 = prompt("Do you need lowercase English letters? y/n", "y");
   lcOpt = yes1no0(userInput1);
-  console.log(`lcOpt = ${lcOpt}`);
+  // console.log(`lcOpt = ${lcOpt}`);
   let ucOpt = 1;
   const userInput2 = prompt("Do you need uppercase English letters? y/n", "y");
   ucOpt = yes1no0(userInput2);
-  console.log(`ucOpt = ${ucOpt}`);
+  // console.log(`ucOpt = ${ucOpt}`);
   let numOpt = 1;
   const userInput3 = prompt("Do you need Hindu-Arabic numerals? y/n", "y");
   numOpt = yes1no0(userInput3);
-  console.log(`numOpt = ${numOpt}`);
+  // console.log(`numOpt = ${numOpt}`);
   // Some old systems must not special characters in passwords.
   let spOpt = 0;
   const userInput4 = prompt("Do you need OWASP special characters? \n (Default \"no\" is for some old system) y/n", "n");
   spOpt = yes1no0(userInput4);
-  console.log(`spOpt = ${spOpt}`);
+  // console.log(`spOpt = ${spOpt}`);
   // At least one character type should be selected
   if (lcOpt + ucOpt + numOpt + spOpt < 1) {
     confirm(`This password only support English letters, Hindu-Arabic numerals, and OWASP special characters, if you choose noone of them, a password contains them all will be generated. \n If that is not what you want, please manually refresh this page and re-enter your characters settings.`);
@@ -178,7 +178,7 @@ function getPasswordOptions() {
   pswdOpt = pswdLengthBits.concat(
     Number(lcOpt).toString(2), Number(ucOpt).toString(2), 
     Number(numOpt).toString(2), Number(spOpt).toString(2));
-  console.log(`pswdOpt = ${pswdOpt}`);
+  // console.log(`pswdOpt = ${pswdOpt}`);
   return pswdOpt;
 }
 
@@ -187,19 +187,19 @@ function getRandom(arr) {
   // Todo: It should have an input check here but this function is not 
   // exposed to customers and I think it is ok now.
   arrLen = arr.length;
-  console.log(arrLen);
+  // console.log(arrLen);
   // Refactoring this function with a more secure random API.
   // crypto.getRandomValues() only accept array of numbers as input, and here 
   // one random number is needed per getRandom() function, so a one numerical element 
   // array is created.
   const oneEleArray = new Uint8Array(1);
   self.crypto.getRandomValues(oneEleArray);
-  console.log(oneEleArray);
+  // console.log(oneEleArray);
   // Notice that oneEleArray is an array, it is not a number.
   // The brute-force hard coding (2**8) is actually the range of Uint8 numbers.
   // Todo: using another graceful way to get the random order here.
   randomChar = arr[Math.floor((oneEleArray[0] / (2 ** 8)) * arrLen)];
-  console.log(randomChar);
+  // console.log(randomChar);
   return randomChar;
 }
 
@@ -207,7 +207,7 @@ function getRandom(arr) {
 function generatePassword() {
   const passwordOptions = getPasswordOptions();
   const passwordLength = parseInt(passwordOptions.slice(0, -4), 2);
-  console.log(`passwordLength: ${passwordLength}`);
+  // console.log(`passwordLength: ${passwordLength}`);
   // Construct character candidates for password.
   // Follow the order of password option structure
   // !!!!!!
@@ -216,30 +216,30 @@ function generatePassword() {
   // issues of slice function, but I have to learn more test more and verify my guess.
   let charCandidates = [];
   // Bit 3: lowercase English letters, 1 for chosen, 0 for not chosen.
-  console.log(passwordOptions.slice(-4, -3));
+  // console.log(passwordOptions.slice(-4, -3));
   if (passwordOptions.slice(-4, -3) == 1) {
     charCandidates = charCandidates.concat(lowerCasedCharacters);
   }
   // Bit 2: uppercase English letters, 1 for chosen, 0 for not chosen.
-  console.log(passwordOptions.slice(-3, -2));
+  // console.log(passwordOptions.slice(-3, -2));
   if (passwordOptions.slice(-3, -2) == 1) {
     charCandidates = charCandidates.concat(upperCasedCharacters);
   }
   // Bit 1: Hindu-Arabic numerals option, 1 for chosen, 0 for not chosen.
-  console.log(passwordOptions.slice(-2, -1));
+  // console.log(passwordOptions.slice(-2, -1));
   if (passwordOptions.slice(-2, -1) == 1) {
     charCandidates = charCandidates.concat(numericCharacters);
   }
   // Bit 0: OWASP special characters option, 1 for chosen, 0 for not chosen.
-  console.log(passwordOptions.slice(-1));
+  // console.log(passwordOptions.slice(-1));
   if (passwordOptions.slice(-1) == 1) {
     charCandidates = charCandidates.concat(specialCharacters);
   }
-  console.log(`charCandidates: ${charCandidates}`);
+  // console.log(`charCandidates: ${charCandidates}`);
   let passwordArray = new Array(passwordLength);
   for (let i = 0; i < passwordLength; i++) {
     passwordArray[i] = getRandom(charCandidates);
-    console.log(`passwordArray[${i}] = ${passwordArray[i]}`);
+    // console.log(`passwordArray[${i}] = ${passwordArray[i]}`);
   }
   const password = passwordArray.join("");
   return password;
