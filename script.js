@@ -95,7 +95,31 @@ const isNumeric = function (str) {
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-const getPasswordLengthBits = function () {}
+const getPasswordLengthBits = function () {
+  const shortestPswdLen = 8;
+  const longestPswdLen = 128;
+  const normalPswdLen = 12;
+  const pswdLen = prompt(`Choose the length of password: \n At least ${shortestPswdLen} characters but no more than ${longestPswdLen}.`, `${normalPswdLen}`);
+  // console.log(typeof(pswdLen)); // string
+  // This if ... else ... does not work, because of the const.
+  // if (!isNumeric(pswdLen)) {
+  //   alert(`"${pswdLen}" is not a number, please refresh this page and re-enter the length of code.`, location.reload());
+  // } else if (pswdLen < shortestPswdLen) {
+  //   const pswdLenBits = Number(shortestPswdLen).toString(2);
+  // } else if (pswdLen > longestPswdLen) {
+  //   const pswdLenBits = Number(longestPswdLen).toString(2);
+  // } else {
+  //   const pswdLenBits = Number(pswdLen).toString(2);
+  // }
+  const pswdLenBits = (!isNumeric(pswdLen)) 
+                      ? confirm(`"${pswdLen}" is not a number, please refresh this page and re-enter the length of code.`, location.reload())
+                      : (pswdLen < shortestPswdLen) 
+                        ? Number(shortestPswdLen).toString(2)
+                        : (pswdLen > longestPswdLen)
+                          ? Number(longestPswdLen).toString(2)
+                          : Number(pswdLen).toString(2);
+  return pswdLenBits;
+}
 
 // Function to assign 1 to some kind of "yes" and 0 to some kind of "no"
 const yes1no0 = function (userInput) {
@@ -113,28 +137,8 @@ function getPasswordOptions() {
   // Password option, it is a binary number, like a bank of switches.
   // The structure of pswdOpt is at the end of this function.
   let pswdOpt = "";
-  const shortestPswdLen = 8;
-  const longestPswdLen = 128;
-  const normalPswdLen = 12;
-  const pswdLen = prompt(`Choose the length of password: \n At least ${shortestPswdLen} characters but no more than ${longestPswdLen}.`, `${normalPswdLen}`);
-  // console.log(typeof(pswdLen)); // string
-  // if (!isNumeric(pswdLen)) {
-  //   alert(`"${pswdLen}" is not a number, please refresh this page and re-enter the length of code.`, location.reload());
-  // } else if (pswdLen < shortestPswdLen) {
-  //   const pswdLenBits = Number(shortestPswdLen).toString(2);
-  // } else if (pswdLen > longestPswdLen) {
-  //   const pswdLenBits = Number(longestPswdLen).toString(2);
-  // } else {
-  //   const pswdLenBits = Number(pswdLen).toString(2);
-  // }
-  const pswdLenBits = (!isNumeric(pswdLen)) 
-                      ? confirm(`"${pswdLen}" is not a number, please refresh this page and re-enter the length of code.`, location.reload())
-                      : (pswdLen < shortestPswdLen) 
-                        ? Number(shortestPswdLen).toString(2)
-                        : (pswdLen > longestPswdLen)
-                          ? Number(longestPswdLen).toString(2)
-                          : Number(pswdLen).toString(2);
-  console.log(`pswdLenBits = ${pswdLenBits}`);
+  const pswdLengthBits = getPasswordLengthBits();
+  console.log(`pswdLengthBits = ${pswdLengthBits}`);
   let lcOpt = 1;
   const userInput1 = prompt("Do you need lowercase English letters? y/n", "y");
   lcOpt = yes1no0(userInput1);
@@ -171,7 +175,7 @@ function getPasswordOptions() {
   //    bit 2: uppercase English letters, 1 for chosen, 0 for not chosen.
   //    bit 3: lowercase English letters, 1 for chosen, 0 for not chosen.
   // bit 4~11: password length in binary format.
-  pswdOpt = pswdLenBits.concat(
+  pswdOpt = pswdLengthBits.concat(
     Number(lcOpt).toString(2), Number(ucOpt).toString(2), 
     Number(numOpt).toString(2), Number(spOpt).toString(2));
   console.log(`pswdOpt = ${pswdOpt}`);
