@@ -180,11 +180,20 @@ function getPasswordOptions() {
 
 // Function for getting a random element from an array
 function getRandom(arr) {
+  // Todo: It should have an input check here but this function is not 
+  // exposed to customers and I think it is ok now.
   arrLen = arr.length;
   console.log(arrLen);
+  // Refactoring this function with a more secure random API.
+  // crypto.getRandomValues() only accept array of numbers as input, and here 
+  // one random number is needed per getRandom() function, so a one numerical element 
+  // array is created.
   const oneEleArray = new Uint8Array(1);
   self.crypto.getRandomValues(oneEleArray);
   console.log(oneEleArray);
+  // Notice that oneEleArray is an array, it is not a number.
+  // The brute-force hard coding (2**8) is actually the range of Uint8 numbers.
+  // Todo: using another graceful way to get the random order here.
   randomChar = arr[Math.floor((oneEleArray[0] / (2 ** 8)) * arrLen)];
   console.log(randomChar);
   return randomChar;
