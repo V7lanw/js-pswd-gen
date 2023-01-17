@@ -85,3 +85,9 @@ Generally, it could generate pure letters passwords, pure digits passwords, pure
 ![2FA-like-code](./assets/2FA-like-code.png)
 
 + You could try it and generate other passwords. Again, this is just a toy project, it may not be the perfect tool as a password generator, but it must be a good tool as a random characters string generator.
+
+## Reference
+
+![Math.random()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)
+![Crypto.getRandomValues()](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues)
+![There’s Math.random(), and then there’s Math.random()](https://v8.dev/blog/math-random)
